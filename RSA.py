@@ -49,9 +49,10 @@ def generate_keypair(p, q):
     phi = (p-1) * (q-1)
     #choose a public exponent e that is coprime to phi.
     #e should be a large number, but for simplicity I used a small fixed value.
-    e = 13
+    #example had e as 13, but a common e value is 65537
+    e = 65537
     if gcd(e, phi) != 1:
-        raise ValueError("e is not coprime to phi")
+        raise ValueError("e is not coprime to phi, select a new e value or rerun.")
     #calculate the private exponent d as the modular inverse of e modulo phi.
     d = mod_inv(e, phi)
     return ((n, e), (n, d))
