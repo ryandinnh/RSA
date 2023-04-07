@@ -29,7 +29,7 @@ def gcd(a, b):
     else:
         return gcd(b, a % b)
 
-#calculate the modular inverse of a modulo m
+#calculate the modular inverse of m
 def mod_inv(a, m):
     def egcd(a, b):
         if b == 0:
@@ -38,6 +38,7 @@ def mod_inv(a, m):
             x, y, g = egcd(b, a % b)
             return (y, x - (a // b) * y, g)
     x, y, g = egcd(a, m)
+    #error check
     if g != 1:
         raise ValueError("modular inverse does not exist")
     else:
@@ -47,8 +48,7 @@ def mod_inv(a, m):
 def generate_keypair(p, q):
     n = p * q
     phi = (p-1) * (q-1)
-    #choose a public exponent e that is coprime to phi.
-    #e should be a large number, but for simplicity I used a small fixed value.
+    #choose a public exponent e that is coprime to variable phi.
     #example had e as 13, but a common e value is 65537
     e = 65537
     if gcd(e, phi) != 1:
@@ -61,6 +61,7 @@ def generate_keypair(p, q):
 def encrypt(msg, public_key):
     n, e = public_key
     m = int.from_bytes(msg.encode(), 'big')
+    #error check
     if m >= n:
         raise ValueError("message too large to encrypt")
     c = pow(m, e, n)
@@ -73,7 +74,6 @@ def decrypt(ciphertext, private_key):
     msg = m.to_bytes((m.bit_length() + 7) // 8, 'big').decode()
     return msg
 
-#generate random prime numbers p and q.
 p = generate_prime()
 q = generate_prime()
 
@@ -81,13 +81,13 @@ q = generate_prime()
 public_key, private_key = generate_keypair(p, q)
 print(f"p = {p}\nq = {q}\ne = {public_key[1]}\nd = {private_key[1]}")
 
-#get the message to encrypt.
+#input
 msg = input("Enter message: ")
 
-#encrypt the message using the public key.
+#encryption
 ciphertext = encrypt(msg, public_key)
 print(f"Encrypted message = {ciphertext}")
 
-#decrypt the ciphertext using the private key.
+#decryption
 plaintext = decrypt(ciphertext, private_key)
 print(f"Decrypted message = {plaintext}")
