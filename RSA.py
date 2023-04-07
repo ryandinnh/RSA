@@ -1,3 +1,7 @@
+#Ryan Dinh rqd3qmk
+#Intro to Cybersecurity CS3710
+#04/06/2023
+
 import random #for p and q values
 
 #check if a number is prime, used for prime number generation 
